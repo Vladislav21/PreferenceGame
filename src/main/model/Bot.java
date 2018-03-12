@@ -4,8 +4,7 @@ import main.controller.GameStrategy;
 
 import java.util.List;
 
-public class Bot {
-    private int ID; // уникальный номер бота
+public class Bot implements Cloneable {
     private String name; // имя бота
     private int hill; // гора
     private int bullet; // пуля
@@ -16,18 +15,17 @@ public class Bot {
     private double vista2;
     // Карты бота после раздачи
     private List<Card> cards;
-    private GameStrategy strategy;
-
+    private int valueContract;
+    private int colorContract;
+    private boolean isContractor;
+    private boolean isMiser;
 
     public Bot() {
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
+    @Override
+    public Bot clone() throws CloneNotSupportedException {
+        return (Bot) super.clone();
     }
 
     public String getName() {
@@ -94,14 +92,36 @@ public class Bot {
         this.cards = cards;
     }
 
-    public void setStrategy(GameStrategy strategy) {
-        this.strategy = strategy;
+    public int getValueContract() {
+        return valueContract;
     }
 
-    public GameStrategy getStrategy() {
-        return strategy;
+    public void setValueContract(int valueContract) {
+        this.valueContract = valueContract;
     }
-    public void executeStrategy(Bot bot1, Bot bot2, Bot bot3){
-        strategy.run(bot1,bot2,bot3);
+
+    public int getColorContract() {
+        return colorContract;
     }
+
+    public void setColorContract(int colorContract) {
+        this.colorContract = colorContract;
+    }
+
+    public boolean isContractor() {
+        return isContractor;
+    }
+
+    public void setContractor(boolean contractor) {
+        isContractor = contractor;
+    }
+
+    public boolean isMiser() {
+        return isMiser;
+    }
+
+    public void setMiser(boolean miser) {
+        isMiser = miser;
+    }
+
 }

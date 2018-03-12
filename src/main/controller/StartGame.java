@@ -7,8 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class StartGame {
-    public void setStartGame(Distribution distribution, int distributionNumber, Deck deck, Bot bot1, Bot bot2, Bot bot3, Distributor distributor) {
-        distribution.setDistributionNumber(distributionNumber);
+    public void setStartGame( Deck deck, Bot bot1, Bot bot2, Bot bot3, Distributor distributor) {
         Collections.shuffle(deck.getCards());
         List<Card> cards1 = new ArrayList<>();
         List<Card> cards2 = new ArrayList<>();

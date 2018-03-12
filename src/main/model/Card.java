@@ -49,8 +49,11 @@ public class Card {
 
         if (card.getColor() == 0) {
             switch (card.getValue()) {
+                case -1:
+                    str = "SPADES" + " 6";
+                    break;
                 case 0:
-                   str = "SPADES" + " 7";
+                    str = "SPADES" + " 7";
                     break;
                 case 1:
                     str = "SPADES" + " 8";
@@ -77,6 +80,9 @@ public class Card {
         }
         if (card.getColor() == 1) {
             switch (card.getValue()) {
+                case -1:
+                    str = "CLUBS" + " 6";
+                    break;
                 case 0:
                     str = "CLUBS" + " 7";
                     break;
@@ -105,6 +111,9 @@ public class Card {
         }
         if (card.getColor() == 2) {
             switch (card.getValue()) {
+                case -1:
+                    str = "DIAMONDS" + " 6";
+                    break;
                 case 0:
                     str = "DIAMONDS" + " 7";
                     break;
@@ -133,6 +142,9 @@ public class Card {
         }
         if (card.getColor() == 3) {
             switch (card.getValue()) {
+                case -1:
+                    str = "HEARTS" + " 6";
+                    break;
                 case 0:
                     str = "HEARTS" + " 7";
                     break;
@@ -184,9 +196,6 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "color=" + color +
-                ", value=" + value +
-                '}';
+        return Card.getCard(new Card(color, value));
     }
 }
