@@ -1,8 +1,7 @@
 package main.model;
 
-import main.controller.GameStrategy;
-
 import java.util.List;
+
 
 public class Bot implements Cloneable {
     private String name; // имя бота

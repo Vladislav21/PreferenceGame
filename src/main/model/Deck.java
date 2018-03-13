@@ -27,7 +27,12 @@ public class Deck {
         filling(cards);
     }
 
-    public void filling(List<Card> cards) {
+    /**
+     *
+     * @param cards
+     * Заполняет лист карт значениями колоды
+     */
+    private void filling(List<Card> cards) {
 
         cards.add(new Card(SPADES, _7));
         cards.add(new Card(SPADES, _8));

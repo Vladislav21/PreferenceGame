@@ -21,6 +21,12 @@ public class Distribution {
     private int bribe2;
     private int bribe3;
     private List<String> sequenceOfSteps;
+    private int botBullet1;
+    private int botBullet2;
+    private int botBullet3;
+    private int botHill1;
+    private int botHill2;
+    private int botHill3;
 
     public List<Card> getCards1() {
         return cards1;
@@ -156,5 +162,53 @@ public class Distribution {
 
     public void setSequenceOfSteps(List<String> sequenceOfSteps) {
         this.sequenceOfSteps = sequenceOfSteps;
+    }
+
+    public int getBotBullet1() {
+        return botBullet1;
+    }
+
+    public void setBotBullet1(int botBullet1) {
+        this.botBullet1 = botBullet1;
+    }
+
+    public int getBotBullet2() {
+        return botBullet2;
+    }
+
+    public void setBotBullet2(int botBullet2) {
+        this.botBullet2 = botBullet2;
+    }
+
+    public int getBotBullet3() {
+        return botBullet3;
+    }
+
+    public void setBotBullet3(int botBullet3) {
+        this.botBullet3 = botBullet3;
+    }
+
+    public int getBotHill1() {
+        return botHill1;
+    }
+
+    public void setBotHill1(int botHill1) {
+        this.botHill1 = botHill1;
+    }
+
+    public int getBotHill2() {
+        return botHill2;
+    }
+
+    public void setBotHill2(int botHill2) {
+        this.botHill2 = botHill2;
+    }
+
+    public int getBotHill3() {
+        return botHill3;
+    }
+
+    public void setBotHill3(int botHill3) {
+        this.botHill3 = botHill3;
     }
 }

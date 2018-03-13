@@ -45,7 +45,7 @@ public class FinallAPI {
                 + "\nКарты " + nameBot2 + ":" + cards2
                 + "\nКарты " + nameBot3 + ":" + cards3
                 + "\nПрикуп:" + cards4
-                + "\nТорговлю выиграл:" + nameWinner;
+                + "\nТорговлю выиграл:" + nameWinner + "\n";
         bufferedWriter.write(data);
         bufferedWriter.close();
     }
@@ -76,7 +76,7 @@ public class FinallAPI {
                 + "\nЗаявка для " + nameBot2 + ":" + strategyBot2
                 + "\nЗаявка для " + nameBot3 + ":" + strategyBot3
                 + "\nВыбранная игра:" + selectGame
-                + "\nПрикуп:" + cards;
+                + "\nПрикуп:" + cards + "\n";
         bufferedWriter.write(data);
         bufferedWriter.close();
 
@@ -105,13 +105,47 @@ public class FinallAPI {
                 + "\nВзятка для " + nameBot1 + ":" + bribe1
                 + "\nВзятка для " + nameBot2 + ":" + bribe2
                 + "\nВзятка для " + nameBot3 + ":" + bribe3
-                + "\nПоследовательность ходов:" + sequenceOfSteps;
+                + "\nПоследовательность ходов:" + sequenceOfSteps + "\n";
         bufferedWriter.write(data);
         bufferedWriter.close();
 
 
     }
 
-    /*public void*/
+    public void getResultCardProcess(List<Distribution> list, int distributionNumber) throws IOException {
+        Distribution distribution = list.get(distributionNumber);
+        String nameBot1 = distribution.getBotName1();
+        String nameBot2 = distribution.getBotName2();
+        String nameBot3 = distribution.getBotName3();
+        int bribe1 = distribution.getBribe1();
+        int bribe2 = distribution.getBribe2();
+        int bribe3 = distribution.getBribe3();
+        int botBullet1 = distribution.getBotBullet1();
+        int botBullet2 = distribution.getBotBullet2();
+        int botBullet3 = distribution.getBotBullet3();
+        int botHill1 = distribution.getBotHill1();
+        int botHill2 = distribution.getBotHill2();
+        int botHill3 = distribution.getBotHill3();
+        int check = (distributionNumber) + 1;
+        System.out.println("Данные для " + check + " раздачи о результате розыгрыша:");
+        System.out.println("Взятка для " + nameBot1 + ":" + bribe1);
+        System.out.println("Взятка для " + nameBot2 + ":" + bribe2);
+        System.out.println("Взятка для " + nameBot3 + ":" + bribe3);
+        System.out.println("Пуля и гора соответственно для " + nameBot1 + ":" + botBullet1 + " и " + botHill1);
+        System.out.println("Пуля и гора соответственно для " + nameBot2 + ":" + botBullet2 + " и " + botHill2);
+        System.out.println("Пуля и гора соответственно для " + nameBot3 + ":" + botBullet3 + " и " + botHill3);
+
+        FileWriter fw = new FileWriter(FILE_NAME, true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fw);
+        String data = "\nДанные для " + check + " раздачи о результате розыгрыша:"
+                + "\nВзятка для " + nameBot1 + ":" + bribe1
+                + "\nВзятка для " + nameBot2 + ":" + bribe2
+                + "\nВзятка для " + nameBot3 + ":" + bribe3
+                + "\nПуля и гора соответственно для " + nameBot1 + ":" + botBullet1 + " и " + botHill1
+                + "\nПуля и гора соответственно для " + nameBot2 + ":" + botBullet2 + " и " + botHill2
+                + "\nПуля и гора соответственно для " + nameBot3 + ":" + botBullet3 + " и " + botHill3 + "\n";
+        bufferedWriter.write(data);
+        bufferedWriter.close();
+    }
 
 }

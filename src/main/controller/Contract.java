@@ -4,6 +4,7 @@ import main.model.Bot;
 import main.model.Card;
 import main.model.Distributor;
 import org.apache.log4j.Logger;
+import sun.rmi.runtime.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -304,11 +305,10 @@ public class Contract implements GameStrategy {
                 log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card1));
                 card2 = getMaxOrMaxTrumpCard(bot2.getCards(), checkCard.getColor());
                 log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, botContractor, bot1, bot2, log);
+                comparisonCards(checkCard, card1, card2, bot1, botContractor, bot2, log);
                 step1 = writeSteps(botContractor);
                 step2 = writeSteps(bot1);
                 step3 = writeSteps(bot2);
-
             }
             if (select == 1) {
                 checkCard = getMaxOrMaxTrumpCard(bot1.getCards(), trump);

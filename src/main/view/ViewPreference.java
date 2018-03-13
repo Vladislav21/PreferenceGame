@@ -24,7 +24,6 @@ public class ViewPreference {
     private Deck deck;
     private Logger log;
     private InitializationGame init;
-    private ConditionsGame conditionsGame;
     private StartGame start;
     private EndGame endGame;
     private FinallAPI finallAPI;
@@ -41,7 +40,6 @@ public class ViewPreference {
         deck = new Deck();
         log = Logger.getLogger(Main.class.getName());
         init = new InitializationGame();
-        conditionsGame = new ConditionsGame();
         start = new StartGame();
         endGame = new EndGame();
         finallAPI = new FinallAPI();
@@ -103,32 +101,54 @@ public class ViewPreference {
                         log.info("\n" + bot3.getName() + ": " + bot3.getOwnVista());
                         log.info("\n----------------------------------------------------------------------------------");
                         break;
+                    default:
+                        System.out.println("Действий с такой цифрой нет. Запустите заного.");
+                        break;
                 }
                 break;
             case 2:
                 System.out.println("Всего доброго! Для старта запустите приложение сного");
                 break;
-        }
-        menuAfterGame();
-        int selectMethod = scanner.nextInt();
-        switch (selectMethod) {
-            case 1:
-                System.out.println("Введите номер раздачи для которой хотите получить информацию:");
-                int selectDistribution = scanner.nextInt();
-                finallAPI.getDataForSpecificDistribution(distributionList, selectDistribution - 1);
-                break;
-            case 2:
-                System.out.println("Введите номер раздачи для которой хотите получить информацию:");
-                int selectDistribution1 = scanner.nextInt();
-                finallAPI.getDataForSpecificDistributionOfTrade(distributionList, selectDistribution1 - 1);
-                break;
-            case 3:
-                System.out.println("Введите номер раздачи для которой хотите получить информацию:");
-                int selectDistribution2 = scanner.nextInt();
-                finallAPI.getCardProcess(distributionList, selectDistribution2 - 1);
+            default:
+                System.out.println("Действий с такой цифрой нет. Запустите заного.");
                 break;
         }
+        boolean flag = true;
+        while (flag) {
+            menuAfterGame();
+            int selectMethod = scanner.nextInt();
+            switch (selectMethod) {
+                case 1:
+                    System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                    int selectDistribution = scanner.nextInt();
+                    finallAPI.getDataForSpecificDistribution(distributionList, selectDistribution - 1);
+                    break;
+                case 2:
+                    System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                    int selectDistribution1 = scanner.nextInt();
+                    finallAPI.getDataForSpecificDistributionOfTrade(distributionList, selectDistribution1 - 1);
+                    break;
+                case 3:
+                    System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                    int selectDistribution2 = scanner.nextInt();
+                    finallAPI.getCardProcess(distributionList, selectDistribution2 - 1);
+                    break;
+                case 4:
+                    System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                    int selectDistribution3 = scanner.nextInt();
+                    finallAPI.getResultCardProcess(distributionList, selectDistribution3 - 1);
+                    break;
+                case 5:
+                    System.out.println("Пока! Чтобы опять начать работать запустите приложение");
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("Действий с такой цифрой нет. Запустите заного.");
+                    break;
 
+            }
+        }
+        scanner.close();
     }
 
     private void menuBeforeGame() {
@@ -143,11 +163,7 @@ public class ViewPreference {
         System.out.println("2 - Метод поулчения данных о процессе торговли для определенной раздачи (включая прикуп)");
         System.out.println("3 - Метод получения данных о процессе розыгрыша (последовательность ходов и принадлежность взяток) определенной раздачи");
         System.out.println("4 - Метод получения данных о результатах розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
-        System.out.println("5 - Метод получения данных о полном процессе розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
-        System.out.println("6 - Метод получения данных о текущем состоянии пули, горы и вистах игрока после определенной раздачи");
-        System.out.println("7 - Метод поулчения промежуточного результата игрока после определенной раздачи");
-        System.out.println("8 - Метод получения статистики по игроку после розыгрыша определенной раздачи");
-        System.out.println("9 - Метод получения промежуточного результата всех игроков после определенной раздачи");
+        System.out.println("5 - Выход");
     }
 
     private Distribution doApp(int countDistribution, String nameBot1, String nameBot2, String nameBot3, String nameDistributer, InitializationGame init, StartGame start, Bot bot1, Bot bot2, Bot bot3, Distributor distributor, Logger log, Deck deck, ProcessOfTrade pof, EndGame endGame) throws CloneNotSupportedException {
@@ -160,6 +176,12 @@ public class ViewPreference {
         int bribe1 = 0;
         int bribe2 = 0;
         int bribe3 = 0;
+        int bullet1 = 0;
+        int bullet2 = 0;
+        int bullet3 = 0;
+        int hill1 = 0;
+        int hill2 = 0;
+        int hill3 = 0;
         init.setNameBots(bot1, bot2, bot3, distributor, nameBot1, nameBot2, nameBot3, nameDistributer);
         start.setStartGame(deck, bot1, bot2, bot3, distributor);
         log.info("Начало " + returnCountDistribution + " раздачи");
@@ -260,9 +282,21 @@ public class ViewPreference {
         bribe1 = bot1.getBribe();
         bribe2 = bot2.getBribe();
         bribe3 = bot3.getBribe();
+        bullet1 = bot1.getBullet();
+        bullet2 = bot2.getBullet();
+        bullet3 = bot3.getBullet();
+        hill1 = bot1.getHill();
+        hill2 = bot2.getHill();
+        hill3 = bot3.getHill();
         distribution1.setBribe1(bribe1);
         distribution1.setBribe2(bribe2);
         distribution1.setBribe3(bribe3);
+        distribution1.setBotBullet1(bullet1);
+        distribution1.setBotBullet2(bullet2);
+        distribution1.setBotBullet3(bullet3);
+        distribution1.setBotHill1(hill1);
+        distribution1.setBotHill2(hill2);
+        distribution1.setBotHill3(hill3);
 
         log.info("\n----------------------------------------------------------------------------------");
         log.info("\n------------------------------- Результат взяток ---------------------------------");

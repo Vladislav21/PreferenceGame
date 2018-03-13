@@ -45,6 +45,11 @@ public class Card {
         isTrumpCard = trumpCard;
     }
 
+    /**
+     * @param card
+     * Получает карту в виде двух чисел: масть и значение.Далее преобразует это в стринг
+     * @return String
+     */
     public static String getCard(Card card) {
 
         if (card.getColor() == 0) {
