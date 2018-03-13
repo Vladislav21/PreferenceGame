@@ -3,10 +3,7 @@ package main.controller;
 import main.model.Card;
 import main.model.Distribution;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.List;
 
 public class FinallAPI {
@@ -15,13 +12,13 @@ public class FinallAPI {
 
     public void getDataForSpecificDistribution(List<Distribution> list, int distributionNumber) throws IOException {
         Distribution distribution = list.get(distributionNumber);
-        String nameBot1 = distribution.getBot1().getName();
-        String nameBot2 = distribution.getBot2().getName();
-        String nameBot3 = distribution.getBot3().getName();
+        String nameBot1 = distribution.getBotName1();
+        String nameBot2 = distribution.getBotName2();
+        String nameBot3 = distribution.getBotName3();
         String nameWinner = null; // имя того кто выиграл торговлю
-        List<Card> cards1 = distribution.getBot1().getCards();
-        List<Card> cards2 = distribution.getBot2().getCards();
-        List<Card> cards3 = distribution.getBot3().getCards();
+        List<Card> cards1 = distribution.getCards1();
+        List<Card> cards2 = distribution.getCards2();
+        List<Card> cards3 = distribution.getCards3();
         List<Card> cards4 = distribution.getCardsDistributor();
         int check = (distributionNumber) + 1;
 
@@ -40,15 +37,20 @@ public class FinallAPI {
             System.out.println(nameWinner);
         }
 
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME));
+        FileWriter fw = new FileWriter(FILE_NAME,true);
+        BufferedWriter bufferedWriter = new BufferedWriter(fw);
         String data = "\nНомер раздачи: " + check
                 + "\nКарты " + nameBot1 + ":" + cards1
                 + "\nКарты " + nameBot2 + ":" + cards2
                 + "\nКарты " + nameBot3 + ":" + cards3
                 + "\nПрикуп:" + cards4
-                + "\n Торговлю выиграл:" + nameWinner;
-        oos.writeObject(data);
-        oos.close();
+                + "\nТорговлю выиграл:" + nameWinner;
+        bufferedWriter.write(data);
+        bufferedWriter.close();
+    }
+
+    public void getDataForSpecificDistributionOfTrade(List<Distribution> list, int distributionNumber){
 
     }
+
 }

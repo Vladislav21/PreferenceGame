@@ -23,11 +23,6 @@ public class Bot implements Cloneable {
     public Bot() {
     }
 
-    @Override
-    public Bot clone() throws CloneNotSupportedException {
-        return (Bot) super.clone();
-    }
-
     public String getName() {
         return name;
     }

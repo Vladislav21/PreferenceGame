@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class ViewPreference {
 
-
     private GameStrategy contract = new Contract();
     private GameStrategy misery = new Misery();
     private GameStrategy unpacking = new Unpacking();
@@ -127,6 +126,9 @@ public class ViewPreference {
     private Distribution doApp(int countDistribution, String nameBot1, String nameBot2, String nameBot3, String nameDistributer, InitializationGame init, StartGame start, Bot bot1, Bot bot2, Bot bot3, Distributor distributor, Logger log, Deck deck, ProcessOfTrade pof, EndGame endGame) throws CloneNotSupportedException {
         int returnCountDistribution = countDistribution + 1;
         Distribution distribution1 = new Distribution();
+        List<Card> cards1 = new ArrayList<>();
+        List<Card> cards2 = new ArrayList<>();
+        List<Card> cards3 = new ArrayList<>();
         init.setNameBots(bot1, bot2, bot3, distributor, nameBot1, nameBot2, nameBot3, nameDistributer);
         start.setStartGame(deck, bot1, bot2, bot3, distributor);
         log.info("Начало " + returnCountDistribution + " раздачи");
@@ -163,13 +165,20 @@ public class ViewPreference {
             log.info(pof.selectStrategy(bot3));
         }
 
+        cards1.addAll(bot1.getCards());
+        cards2.addAll(bot2.getCards());
+        cards3.addAll(bot3.getCards());
+
         log.info("\nВыбранная игра: ");
         log.info(pof.processTrade(pof.selectStrategy(bot1), pof.selectStrategy(bot2), pof.selectStrategy(bot3), bot1, bot2, bot3));
 
 
-        distribution1.setBot1(bot1.clone());
-        distribution1.setBot2(bot2.clone());
-        distribution1.setBot3(bot3.clone());
+        distribution1.setBotName1(nameBot1);
+        distribution1.setBotName2(nameBot2);
+        distribution1.setBotName3(nameBot3);
+        distribution1.setCards1(cards1);
+        distribution1.setCards2(cards2);
+        distribution1.setCards3(cards3);
         distribution1.setCardsDistributor(distributor.getCards());
         distribution1.setDistributuionNumber(returnCountDistribution);
 

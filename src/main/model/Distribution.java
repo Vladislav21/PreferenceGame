@@ -5,34 +5,62 @@ import java.util.*;
 public class Distribution {
     // скорее всего надо
     private int distributuionNumber;
-    private Bot bot1 = new Bot();
-    private Bot bot2 = new Bot();
-    private Bot bot3 = new Bot();
+    private List<Card> cards1 = new ArrayList<>();
+    private List<Card> cards2 = new ArrayList<>();
+    private List<Card> cards3 = new ArrayList<>();
+    private String botName1;
+    private String botName2;
+    private String botName3;
     private List<Card> cardsDistributor = new ArrayList<>(); // карты прикупа
     private String nameBot; // имя бота который начинает торговлю / чей ход
 
-    public Bot getBot1() {
-        return bot1;
+
+    public List<Card> getCards1() {
+        return cards1;
     }
 
-    public void setBot1(Bot bot1) {
-        this.bot1 = bot1;
+    public void setCards1(List<Card> cards1) {
+        this.cards1 = cards1;
     }
 
-    public Bot getBot2() {
-        return bot2;
+    public List<Card> getCards2() {
+        return cards2;
     }
 
-    public void setBot2(Bot bot2) {
-        this.bot2 = bot2;
+    public void setCards2(List<Card> cards2) {
+        this.cards2 = cards2;
     }
 
-    public Bot getBot3() {
-        return bot3;
+    public List<Card> getCards3() {
+        return cards3;
     }
 
-    public void setBot3(Bot bot3) {
-        this.bot3 = bot3;
+    public void setCards3(List<Card> cards3) {
+        this.cards3 = cards3;
+    }
+
+    public String getBotName1() {
+        return botName1;
+    }
+
+    public void setBotName1(String botName1) {
+        this.botName1 = botName1;
+    }
+
+    public String getBotName2() {
+        return botName2;
+    }
+
+    public void setBotName2(String botName2) {
+        this.botName2 = botName2;
+    }
+
+    public String getBotName3() {
+        return botName3;
+    }
+
+    public void setBotName3(String botName3) {
+        this.botName3 = botName3;
     }
 
     public List<Card> getCardsDistributor() {
