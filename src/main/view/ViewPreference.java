@@ -13,21 +13,39 @@ import java.util.Scanner;
 
 public class ViewPreference {
 
-    private GameStrategy contract = new Contract();
-    private GameStrategy misery = new Misery();
-    private GameStrategy unpacking = new Unpacking();
-    private Bot bot1 = new Bot();
-    private Bot bot2 = new Bot();
-    private Bot bot3 = new Bot();
-    private Distributor distributor = new Distributor();
-    private ProcessOfTrade pof = new ProcessOfTrade();
-    private Deck deck = new Deck();
-    private Logger log = Logger.getLogger(Main.class.getName());
-    private InitializationGame init = new InitializationGame();
-    private ConditionsGame conditionsGame = new ConditionsGame();
-    private StartGame start = new StartGame();
-    private EndGame endGame = new EndGame();
-    private FinallAPI finallAPI = new FinallAPI();
+    private GameStrategy contract;
+    private GameStrategy misery;
+    private GameStrategy unpacking;
+    private Bot bot1;
+    private Bot bot2;
+    private Bot bot3;
+    private Distributor distributor;
+    private ProcessOfTrade pof;
+    private Deck deck;
+    private Logger log;
+    private InitializationGame init;
+    private ConditionsGame conditionsGame;
+    private StartGame start;
+    private EndGame endGame;
+    private FinallAPI finallAPI;
+
+    public ViewPreference() {
+        contract = new Contract();
+        misery = new Misery();
+        unpacking = new Unpacking();
+        bot1 = new Bot();
+        bot2 = new Bot();
+        bot3 = new Bot();
+        distributor = new Distributor();
+        pof = new ProcessOfTrade();
+        deck = new Deck();
+        log = Logger.getLogger(Main.class.getName());
+        init = new InitializationGame();
+        conditionsGame = new ConditionsGame();
+        start = new StartGame();
+        endGame = new EndGame();
+        finallAPI = new FinallAPI();
+    }
 
     public void startPreference() throws IOException, CloneNotSupportedException {
         List<Distribution> distributionList = new ArrayList<>();
@@ -171,7 +189,6 @@ public class ViewPreference {
 
         log.info("\nВыбранная игра: ");
         log.info(pof.processTrade(pof.selectStrategy(bot1), pof.selectStrategy(bot2), pof.selectStrategy(bot3), bot1, bot2, bot3));
-
 
         distribution1.setBotName1(nameBot1);
         distribution1.setBotName2(nameBot2);
