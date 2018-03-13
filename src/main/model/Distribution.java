@@ -8,12 +8,19 @@ public class Distribution {
     private List<Card> cards1 = new ArrayList<>();
     private List<Card> cards2 = new ArrayList<>();
     private List<Card> cards3 = new ArrayList<>();
-    private String botName1;
+    private String botName1; // имена ботов
     private String botName2;
     private String botName3;
     private List<Card> cardsDistributor = new ArrayList<>(); // карты прикупа
     private String nameBot; // имя бота который начинает торговлю / чей ход
-
+    private String strategyBot1;
+    private String strategyBot2;
+    private String strategyBot3;
+    private String selectGame;
+    private int bribe1; // взятки ботов
+    private int bribe2;
+    private int bribe3;
+    private List<String> sequenceOfSteps;
 
     public List<Card> getCards1() {
         return cards1;
@@ -85,5 +92,69 @@ public class Distribution {
 
     public void setDistributuionNumber(int distributuionNumber) {
         this.distributuionNumber = distributuionNumber;
+    }
+
+    public String getStrategyBot1() {
+        return strategyBot1;
+    }
+
+    public void setStrategyBot1(String strategyBot1) {
+        this.strategyBot1 = strategyBot1;
+    }
+
+    public String getStrategyBot2() {
+        return strategyBot2;
+    }
+
+    public void setStrategyBot2(String strategyBot2) {
+        this.strategyBot2 = strategyBot2;
+    }
+
+    public String getStrategyBot3() {
+        return strategyBot3;
+    }
+
+    public void setStrategyBot3(String strategyBot3) {
+        this.strategyBot3 = strategyBot3;
+    }
+
+    public String getSelectGame() {
+        return selectGame;
+    }
+
+    public void setSelectGame(String selectGame) {
+        this.selectGame = selectGame;
+    }
+
+    public int getBribe1() {
+        return bribe1;
+    }
+
+    public void setBribe1(int bribe1) {
+        this.bribe1 = bribe1;
+    }
+
+    public int getBribe2() {
+        return bribe2;
+    }
+
+    public void setBribe2(int bribe2) {
+        this.bribe2 = bribe2;
+    }
+
+    public int getBribe3() {
+        return bribe3;
+    }
+
+    public void setBribe3(int bribe3) {
+        this.bribe3 = bribe3;
+    }
+
+    public List<String> getSequenceOfSteps() {
+        return sequenceOfSteps;
+    }
+
+    public void setSequenceOfSteps(List<String> sequenceOfSteps) {
+        this.sequenceOfSteps = sequenceOfSteps;
     }
 }

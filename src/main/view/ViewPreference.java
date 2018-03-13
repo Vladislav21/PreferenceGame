@@ -117,6 +117,16 @@ public class ViewPreference {
                 int selectDistribution = scanner.nextInt();
                 finallAPI.getDataForSpecificDistribution(distributionList, selectDistribution - 1);
                 break;
+            case 2:
+                System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                int selectDistribution1 = scanner.nextInt();
+                finallAPI.getDataForSpecificDistributionOfTrade(distributionList, selectDistribution1 - 1);
+                break;
+            case 3:
+                System.out.println("Введите номер раздачи для которой хотите получить информацию:");
+                int selectDistribution2 = scanner.nextInt();
+                finallAPI.getCardProcess(distributionList, selectDistribution2 - 1);
+                break;
         }
 
     }
@@ -131,14 +141,13 @@ public class ViewPreference {
         System.out.println("Игра закончена. Выберите действие:");
         System.out.println("1 - Метод получения данных определенной раздачи (кому какие карты были розданы, что в прикупе, кто начинает торговлю/чей ход)");
         System.out.println("2 - Метод поулчения данных о процессе торговли для определенной раздачи (включая прикуп)");
-        System.out.println("3 - Метод получения данных о процессе заявки игрока (какую игру заказал для определенной раздачи) и реакции других игроков (вист/пас, игра в открытую/закрытую)");
-        System.out.println("4 - Метод получения данных о процессе розыгрыша (последовательность ходов и принадлежность взяток) определенной раздачи");
-        System.out.println("5 - Метод получения данных о результатах розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
-        System.out.println("6 - Метод получения данных о полном процессе розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
-        System.out.println("7 - Метод получения данных о текущем состоянии пули, горы и вистах игрока после определенной раздачи");
-        System.out.println("8 - Метод поулчения промежуточного результата игрока после определенной раздачи");
-        System.out.println("9 - Метод получения статистики по игроку после розыгрыша определенной раздачи");
-        System.out.println("10 - Метод получения промежуточного результата всех игроков после определенной раздачи");
+        System.out.println("3 - Метод получения данных о процессе розыгрыша (последовательность ходов и принадлежность взяток) определенной раздачи");
+        System.out.println("4 - Метод получения данных о результатах розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
+        System.out.println("5 - Метод получения данных о полном процессе розыгрыша определенной раздачи (раздача, торговля, заявка, игра, результаты)");
+        System.out.println("6 - Метод получения данных о текущем состоянии пули, горы и вистах игрока после определенной раздачи");
+        System.out.println("7 - Метод поулчения промежуточного результата игрока после определенной раздачи");
+        System.out.println("8 - Метод получения статистики по игроку после розыгрыша определенной раздачи");
+        System.out.println("9 - Метод получения промежуточного результата всех игроков после определенной раздачи");
     }
 
     private Distribution doApp(int countDistribution, String nameBot1, String nameBot2, String nameBot3, String nameDistributer, InitializationGame init, StartGame start, Bot bot1, Bot bot2, Bot bot3, Distributor distributor, Logger log, Deck deck, ProcessOfTrade pof, EndGame endGame) throws CloneNotSupportedException {
@@ -147,6 +156,10 @@ public class ViewPreference {
         List<Card> cards1 = new ArrayList<>();
         List<Card> cards2 = new ArrayList<>();
         List<Card> cards3 = new ArrayList<>();
+        List<String> sequenceOfSteps = new ArrayList<>();
+        int bribe1 = 0;
+        int bribe2 = 0;
+        int bribe3 = 0;
         init.setNameBots(bot1, bot2, bot3, distributor, nameBot1, nameBot2, nameBot3, nameDistributer);
         start.setStartGame(deck, bot1, bot2, bot3, distributor);
         log.info("Начало " + returnCountDistribution + " раздачи");
@@ -198,41 +211,58 @@ public class ViewPreference {
         distribution1.setCards3(cards3);
         distribution1.setCardsDistributor(distributor.getCards());
         distribution1.setDistributuionNumber(returnCountDistribution);
+        distribution1.setStrategyBot1(pof.selectStrategy(bot1));
+        distribution1.setStrategyBot2(pof.selectStrategy(bot2));
+        distribution1.setStrategyBot3(pof.selectStrategy(bot3));
+        distribution1.setSelectGame(pof.processTrade(pof.selectStrategy(bot1), pof.selectStrategy(bot2), pof.selectStrategy(bot3), bot1, bot2, bot3));
 
         if (pof.processTrade(pof.selectStrategy(bot1), pof.selectStrategy(bot2), pof.selectStrategy(bot3), bot1, bot2, bot3).equals("Unpacking")) {
-            unpacking.run(bot1, bot2, bot3, distributor, log);
+            List<String> run = unpacking.run(bot1, bot2, bot3, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
         }
 
         if (bot1.isContractor()) {
-            contract.run(bot1, bot2, bot3, distributor, log);
+            List<String> run = contract.run(bot1, bot2, bot3, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot1.getName());
             bot1.setContractor(false);
         }
         if (bot2.isContractor()) {
-            contract.run(bot2, bot1, bot3, distributor, log);
+            List<String> run = contract.run(bot2, bot1, bot3, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot2.getName());
             bot2.setContractor(false);
         }
         if (bot3.isContractor()) {
-            contract.run(bot3, bot1, bot2, distributor, log);
+            List<String> run = contract.run(bot3, bot1, bot2, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot3.getName());
             bot3.setContractor(false);
         }
         if (bot1.isMiser()) {
-            misery.run(bot1, bot2, bot3, distributor, log);
+            List<String> run = misery.run(bot1, bot2, bot3, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot1.getName());
             bot1.setMiser(false);
         }
         if (bot2.isMiser()) {
-            misery.run(bot2, bot1, bot3, distributor, log);
+            List<String> run = misery.run(bot2, bot1, bot3, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot2.getName());
             bot2.setMiser(false);
         }
         if (bot3.isMiser()) {
-            misery.run(bot3, bot1, bot2, distributor, log);
+            List<String> run = misery.run(bot3, bot1, bot2, distributor, log, sequenceOfSteps);
+            distribution1.setSequenceOfSteps(run);
             distribution1.setNameBot(bot3.getName());
             bot3.setMiser(false);
         }
+        bribe1 = bot1.getBribe();
+        bribe2 = bot2.getBribe();
+        bribe3 = bot3.getBribe();
+        distribution1.setBribe1(bribe1);
+        distribution1.setBribe2(bribe2);
+        distribution1.setBribe3(bribe3);
 
         log.info("\n----------------------------------------------------------------------------------");
         log.info("\n------------------------------- Результат взяток ---------------------------------");
