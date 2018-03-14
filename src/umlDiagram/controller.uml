@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>main.controller</OriginalElement>
+  <nodes>
+    <node x="-22.0" y="-11.0">main.controller.Misery</node>
+    <node x="-449.0" y="686.0">main.controller.StartGame</node>
+    <node x="405.0" y="-55.0">main.controller.Contract</node>
+    <node x="-44.0" y="448.0">main.controller.EndGame</node>
+    <node x="-22.0" y="-179.0">main.controller.GameStrategy</node>
+    <node x="-449.0" y="-11.0">main.controller.Unpacking</node>
+    <node x="-449.0" y="448.0">main.controller.ProcessOfTrade</node>
+    <node x="-449.0" y="589.0">main.controller.InitializationGame</node>
+    <node x="-449.0" y="262.0">main.controller.FinallAPI</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="main.controller.Contract" target="main.controller.GameStrategy">
+      <point x="0.0" y="-136.0" />
+      <point x="608.5" y="-80.0" />
+      <point x="317.16666666666663" y="-80.0" />
+      <point x="135.66666666666663" y="37.0" />
+    </edge>
+    <edge source="main.controller.Unpacking" target="main.controller.GameStrategy">
+      <point x="0.0" y="-92.0" />
+      <point x="-245.5" y="-80.0" />
+      <point x="45.83333333333337" y="-80.0" />
+      <point x="-135.66666666666666" y="37.0" />
+    </edge>
+    <edge source="main.controller.Misery" target="main.controller.GameStrategy">
+      <point x="0.0" y="-92.0" />
+      <point x="-2.8421709430404007E-14" y="37.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="179.0" y="248.0" />
+  <SelectedNodes>
+    <node>main.controller.Misery</node>
+    <node>main.controller.StartGame</node>
+    <node>main.controller.Contract</node>
+    <node>main.controller.EndGame</node>
+    <node>main.controller.GameStrategy</node>
+    <node>main.controller.Unpacking</node>
+    <node>main.controller.ProcessOfTrade</node>
+    <node>main.controller.InitializationGame</node>
+    <node>main.controller.FinallAPI</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>main.model</OriginalElement>
+  <nodes>
+    <node x="-414.0" y="-50.0">main.model.Distribution</node>
+    <node x="-180.0" y="59.5">main.model.Bot</node>
+    <node x="-4.0" y="36.5">main.model.Deck</node>
+    <node x="-68.66666666666669" y="-395.0">main.model.Card</node>
+    <node x="210.0" y="169.5">main.model.Distributor</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="main.model.Distribution" target="main.model.Card">
+      <point x="-53.5" y="-268.0" />
+      <point x="-360.5" y="-100.0" />
+      <point x="-57.888888888888914" y="-100.0" />
+      <point x="-86.22222222222223" y="137.5" />
+    </edge>
+    <edge source="main.model.Deck" target="main.model.Card">
+      <point x="64.66666666666667" y="-181.5" />
+      <point x="157.66666666666674" y="-80.0" />
+      <point x="71.44444444444446" y="-80.0" />
+      <point x="43.111111111111114" y="137.5" />
+    </edge>
+    <edge source="main.model.Distributor" target="main.model.Card">
+      <point x="-36.25" y="-48.5" />
+      <point x="246.25" y="-90.0" />
+      <point x="93.0" y="-90.0" />
+      <point x="64.66666666666669" y="137.5" />
+    </edge>
+    <edge source="main.model.Bot" target="main.model.Card">
+      <point x="-39.0" y="-158.5" />
+      <point x="-141.0" y="-80.0" />
+      <point x="-14.777777777777828" y="-80.0" />
+      <point x="-43.111111111111114" y="137.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="114.5" y="-8.5" />
+  <SelectedNodes>
+    <node>main.model.Distribution</node>
+    <node>main.model.Bot</node>
+    <node>main.model.Deck</node>
+    <node>main.model.Card</node>
+    <node>main.model.Distributor</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
