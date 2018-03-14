@@ -4,6 +4,9 @@ import main.model.Bot;
 
 import java.util.Arrays;
 
+/**
+ * Методы для обновления взяток и подсчета конечных вистов
+ */
 public class EndGame {
     public void refreshBribes(Bot bot1, Bot bot2, Bot bot3) {
         bot1.setBribe(0);

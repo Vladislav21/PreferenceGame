@@ -45,7 +45,7 @@ public class Misery implements GameStrategy {
             }
         }
         // Мизер убрал две невыгодные карты
-        sequenceOfSteps.addAll(drawOfCard(select,logger,botMiser,bot1,bot2));
+        sequenceOfSteps.addAll(drawOfCard(select, logger, botMiser, bot1, bot2));
         return sequenceOfSteps;
     }
 
@@ -139,9 +139,7 @@ public class Misery implements GameStrategy {
 
     private List<String> drawOfCard(int select, Logger log, Bot botMiser, Bot bot1, Bot bot2) {
         List<String> sequenceOfSteps = new ArrayList<>();
-        String step1 = null;
-        String step2 = null;
-        String step3 = null;
+        String step = null;
         for (int i = 0; i < 10; i++) {
             log.info("\nХод номер:" + i);
             Card checkCard;
@@ -155,9 +153,7 @@ public class Misery implements GameStrategy {
                 card2 = getBenefitCard(bot2.getCards(), checkCard);
                 log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                step1 = writeSteps(botMiser);
-                step2 = writeSteps(bot1);
-                step3 = writeSteps(bot2);
+                step = writeSteps(botMiser, bot1, bot2);
             }
             if (select == 1) {
                 checkCard = getMinCard(bot1.getCards());
@@ -167,9 +163,7 @@ public class Misery implements GameStrategy {
                 card2 = getBenefitCard(bot2.getCards(), checkCard);
                 log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                step1 = writeSteps(bot1);
-                step2 = writeSteps(botMiser);
-                step3 = writeSteps(bot2);
+                step = writeSteps(bot1, botMiser, bot2);
             }
             if (select == 2) {
                 checkCard = getMinCard(bot2.getCards());
@@ -179,20 +173,18 @@ public class Misery implements GameStrategy {
                 card2 = getBenefitCard(bot1.getCards(), checkCard);
                 log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                step1 = writeSteps(bot2);
-                step2 = writeSteps(botMiser);
-                step3 = writeSteps(bot1);
+                step = writeSteps(bot2, botMiser, bot1);
             }
         }
-        sequenceOfSteps.add(step1);
-        sequenceOfSteps.add(step2);
-        sequenceOfSteps.add(step3);
+        sequenceOfSteps.add(step);
         writePointsForBots(botMiser);
         return sequenceOfSteps;
     }
 
-    private String writeSteps(Bot bot1) {
-        return "Ходит " + bot1.getName() + "\n";
+    private String writeSteps(Bot bot1, Bot bot2, Bot bot3) {
+        return "\nХодит " + bot1.getName()
+                + "\nХодит " + bot2.getName()
+                + "\nХодит " + bot3.getName() + "\n";
     }
 
     private void writePointsForBots(Bot botMiser) {

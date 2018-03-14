@@ -4,13 +4,21 @@ import main.model.Bot;
 import main.model.Card;
 import main.model.Distributor;
 import org.apache.log4j.Logger;
-import sun.rmi.runtime.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Contract implements GameStrategy {
 
+    /**
+     * Преобразует числовые значени контракта в строку
+     * @param value1
+     * Значение контракта в типе int
+     * @param color1
+     * Масть контракта в типе int
+     * @return String
+     * Контракт в виде строки
+     */
     public static String getContract(int value1, int color1) {
         String contract = null;
         switch (color1) {
@@ -119,6 +127,14 @@ public class Contract implements GameStrategy {
         return sequenceOfSteps;
     }
 
+    /**
+     * @param botContractor1
+     * Бот который зявил контракт
+     * @param botComparable
+     * Бот которого нужно узнать реакцию относительно заявленного контракта
+     * @return reaction
+     * Реакция бота
+     */
     private String getReactionOnContract(Bot botContractor1, Bot botComparable) {
         String reaction = null;
         int countTrump = 0;
@@ -137,6 +153,11 @@ public class Contract implements GameStrategy {
         return reaction = "Pass";
     }
 
+    /**
+     * Устанваливает пули боту, который выиграл контракт, когда другие боты пасанули
+     * @param botWinner
+     * Бот - победитель
+     */
     private void setBulletBotContractForTwoPass(Bot botWinner) {
         if (botWinner.getValueContract() == 6) {
             int bullet = botWinner.getBullet() + 2;
@@ -152,6 +173,13 @@ public class Contract implements GameStrategy {
         }
     }
 
+    /**
+     * Устанавливает гору ботам, которые проиграли
+     * @param botWinner
+     * Бот - победитель
+     * @param botLoser
+     * Проигравший бот
+     */
     private void setHillForBotLoser(Bot botWinner, Bot botLoser) {
         if (botWinner.getValueContract() == 6) {
             if (botLoser.getBribe() >= 4) {
@@ -183,6 +211,14 @@ public class Contract implements GameStrategy {
         }
     }
 
+    /**
+     * Дает максимальную карту в колоде, учитывая козырь
+     * @param cards
+     * Карты бота
+     * @param trump1
+     * козырь
+     * @return Card
+     */
     private Card getMaxOrMaxTrumpCard(List<Card> cards, int trump1) {
         Card returnCard = new Card();
         List<Card> cardsTrump = cards.stream().filter(card -> card.getColor() == trump1).collect(Collectors.toList());
@@ -207,6 +243,23 @@ public class Contract implements GameStrategy {
         return returnCard;
     }
 
+    /**
+     * Сравнение карт
+     * @param card11
+     * карты 1 бота
+     * @param card22
+     * карты 2 бота
+     * @param card33
+     * карты 3 бота
+     * @param bot11
+     * бот 1
+     * @param bot22
+     * бот 2
+     * @param bot33
+     * бот 3
+     * @param log
+     * лог для записи
+     */
     public void comparisonCards(Card card11, Card card22, Card card33, Bot bot11, Bot bot22, Bot bot33, Logger log) {
         if (card11.getColor() == card22.getColor() & card11.getColor() == card33.getColor()) {
             if (card11.getValue() >= card22.getValue() & card11.getValue() >= card33.getValue()) {
@@ -254,11 +307,21 @@ public class Contract implements GameStrategy {
         }
     }
 
+    /**
+     * Запись очков для ботов
+     * @param bot1
+     * бот 1
+     * @param bot2
+     * бот 2
+     * @param bot3
+     * бот 3
+     */
     private void writePointsForBots(Bot bot1, Bot bot2, Bot bot3) {
         setPointsBotContract(bot1);
         setHillForBotLoser(bot1, bot2);
         setHillForBotLoser(bot1, bot3);
     }
+
 
     private void setPointsBotContract(Bot bot1) {
         if (bot1.getBribe() >= 6 & bot1.getValueContract() == 6) {
@@ -288,11 +351,26 @@ public class Contract implements GameStrategy {
 
     }
 
+    /**
+     * Розыгрыш карт
+     * @param select
+     * Выбор, кто будет первым ходить
+     * @param trump
+     * Козырь
+     * @param log
+     * лог
+     * @param botContractor
+     * Бот который выиграл контракт
+     * @param bot1
+     * бот 1
+     * @param bot2
+     * бот 2
+     * @return sequenceOfSteps
+     * последовательность шагов
+     */
     private List<String> drawOfCard(int select, int trump, Logger log, Bot botContractor, Bot bot1, Bot bot2) {
         List<String> sequenceOfSteps = new ArrayList<>();
-        String step1 = null;
-        String step2 = null;
-        String step3 = null;
+        String step = null;
         for (int i = 0; i < 10; i++) {
             log.info("\nХод номер:" + i);
             Card checkCard;
@@ -306,9 +384,8 @@ public class Contract implements GameStrategy {
                 card2 = getMaxOrMaxTrumpCard(bot2.getCards(), checkCard.getColor());
                 log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, bot1, botContractor, bot2, log);
-                step1 = writeSteps(botContractor);
-                step2 = writeSteps(bot1);
-                step3 = writeSteps(bot2);
+                step = writeSteps(botContractor, bot1, bot2);
+
             }
             if (select == 1) {
                 checkCard = getMaxOrMaxTrumpCard(bot1.getCards(), trump);
@@ -318,9 +395,7 @@ public class Contract implements GameStrategy {
                 card2 = getMaxOrMaxTrumpCard(bot2.getCards(), checkCard.getColor());
                 log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, bot1, botContractor, bot2, log);
-                step1 = writeSteps(bot1);
-                step2 = writeSteps(botContractor);
-                step3 = writeSteps(bot2);
+                step = writeSteps(bot1, botContractor, bot2);
 
             }
             if (select == 2) {
@@ -331,15 +406,10 @@ public class Contract implements GameStrategy {
                 card2 = getMaxOrMaxTrumpCard(bot1.getCards(), checkCard.getColor());
                 log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
                 comparisonCards(checkCard, card1, card2, bot2, botContractor, bot1, log);
-                step1 = writeSteps(bot2);
-                step2 = writeSteps(botContractor);
-                step3 = writeSteps(bot1);
+                step = writeSteps(bot2, botContractor, bot1);
             }
-
         }
-        sequenceOfSteps.add(step1);
-        sequenceOfSteps.add(step2);
-        sequenceOfSteps.add(step3);
+        sequenceOfSteps.add(step);
         switch (select) {
             case 0:
                 writePointsForBots(botContractor, bot1, bot2);
@@ -355,8 +425,10 @@ public class Contract implements GameStrategy {
         return sequenceOfSteps;
     }
 
-    private String writeSteps(Bot bot1) {
-        return "Ходит " + bot1.getName() + "\n";
+    private String writeSteps(Bot bot1, Bot bot2, Bot bot3) {
+        return "\nХодит " + bot1.getName()
+                + "\nХодит " + bot2.getName()
+                + "\nХодит " + bot3.getName() + "\n";
     }
 
 }

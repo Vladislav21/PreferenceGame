@@ -3,6 +3,9 @@ package main.controller;
 import main.model.Bot;
 import main.model.Card;
 
+/**
+ * Методы выбора стратегии ботами, процесс торговли и сравнение контрактов
+ */
 public class ProcessOfTrade {
     public String selectStrategy(Bot bot) {
         String nameStrategy = null;
@@ -79,7 +82,7 @@ public class ProcessOfTrade {
             }
             return nameStrategy = "Contract";
         }
-        if (countLessOrEquals10 >= 7) {
+        if (countLessOrEquals10 >= 8) {
             return nameStrategy = "Misery";
         } else {
             return nameStrategy = "Pass";
