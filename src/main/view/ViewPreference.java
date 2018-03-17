@@ -310,6 +310,7 @@ public class ViewPreference {
         log.info("\nРаздача завершена");
         log.info("\n----------------------------------------------------------------------------------");
         endGame.refreshBribes(bot1, bot2, bot3);
+        endGame.refreshWinner(bot1, bot2, bot3);
         return distribution1;
     }
 }

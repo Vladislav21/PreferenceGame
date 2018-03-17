@@ -18,6 +18,7 @@ public class Bot implements Cloneable {
     private int colorContract;
     private boolean isContractor;
     private boolean isMiser;
+    private boolean isWinner;
 
     public Bot() {
     }
@@ -118,4 +119,11 @@ public class Bot implements Cloneable {
         isMiser = miser;
     }
 
+    public boolean isWinner() {
+        return isWinner;
+    }
+
+    public void setWinner(boolean winner) {
+        isWinner = winner;
+    }
 }

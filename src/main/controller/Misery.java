@@ -49,22 +49,28 @@ public class Misery implements GameStrategy {
         return sequenceOfSteps;
     }
 
-    public void comparisonCards(Card card11, Card card22, Card card33, Bot bot11, Bot bot22, Bot bot33, Logger log) {
+    private void comparisonCards(Card card11, Card card22, Card card33, Bot bot11, Bot bot22, Bot bot33, Logger log) {
         if (card11.getColor() == card22.getColor() & card11.getColor() == card33.getColor()) {
             if (card11.getValue() >= card22.getValue() & card11.getValue() >= card33.getValue()) {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             }
             if (card22.getValue() >= card11.getValue() & card22.getValue() >= card33.getValue()) {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
             if (card33.getValue() >= card11.getValue() & card33.getValue() >= card22.getValue()) {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() == card22.getColor() & card11.getColor() != card33.getColor()) {
@@ -72,10 +78,14 @@ public class Misery implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
         }
         if (card11.getColor() == card33.getColor() & card11.getColor() != card22.getColor()) {
@@ -83,16 +93,21 @@ public class Misery implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() != card22.getColor() & card11.getColor() != card33.getColor()) {
             int bribe = bot11.getBribe() + 1;
             bot11.setBribe(bribe);
             log.info("\n" + bot11.getName() + " получил взятку");
+            setWinner(bot11, bot22, bot33);
         }
     }
 
@@ -139,51 +154,93 @@ public class Misery implements GameStrategy {
 
     private List<String> drawOfCard(int select, Logger log, Bot botMiser, Bot bot1, Bot bot2) {
         List<String> sequenceOfSteps = new ArrayList<>();
-        String step = null;
         for (int i = 0; i < 10; i++) {
-            int numberStep = i + 1;
-            log.info("\nХод номер:" + numberStep);
-            Card checkCard;
-            Card card1;
-            Card card2;
-            if (select == 0) {
-                checkCard = getMinCard(botMiser.getCards());
-                log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getBenefitCard(bot1.getCards(), checkCard);
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getBenefitCard(bot2.getCards(), checkCard);
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                step = writeSteps(botMiser, bot1, bot2);
-            }
-            if (select == 1) {
-                checkCard = getMinCard(bot1.getCards());
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getBenefitCard(bot2.getCards(), checkCard);
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                step = writeSteps(bot1, botMiser, bot2);
-            }
-            if (select == 2) {
-                checkCard = getMinCard(bot2.getCards());
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getBenefitCard(bot1.getCards(), checkCard);
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                step = writeSteps(bot2, botMiser, bot1);
+            label:
+            {
+                int numberStep = i + 1;
+                log.info("\nХод номер:" + numberStep);
+                if (select == 0) {
+                    if (numberStep == 1) {
+                        doIt(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botMiser.isWinner()) {
+                            doIt(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                    }
+                }
+                if (select == 1) {
+                    if (numberStep == 1) {
+                        doIt(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botMiser.isWinner()) {
+                            doIt(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                    }
+                }
+                if (select == 2) {
+                    if (numberStep == 1) {
+                        doIt(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botMiser.isWinner()) {
+                            doIt(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps);
+                        }
+                    }
+
+                }
             }
         }
-        sequenceOfSteps.add(step);
         writePointsForBots(botMiser);
         return sequenceOfSteps;
     }
 
-    private String writeSteps(Bot bot1, Bot bot2, Bot bot3) {
-        return "\nХодит " + bot1.getName()
+    private void doIt(Logger log, Bot bot11, Bot bot22, Bot bot33, int numberStep, List<String> sequenceOfSteps) {
+        Card checkCard;
+        Card card1;
+        Card card2;
+        String step = null;
+        checkCard = getMinCard(bot11.getCards());
+        log.info("\n" + bot11.getName() + " кладет:" + Card.getCard(checkCard));
+        card1 = getBenefitCard(bot22.getCards(), checkCard);
+        log.info("\n" + bot22.getName() + " кладет:" + Card.getCard(card1));
+        card2 = getBenefitCard(bot33.getCards(), checkCard);
+        log.info("\n" + bot33.getName() + " кладет:" + Card.getCard(card2));
+        comparisonCards(checkCard, card1, card2, bot11, bot22, bot33, log);
+        step = writeSteps(bot11, bot22, bot33, numberStep);
+        sequenceOfSteps.add(step);
+    }
+
+    private String writeSteps(Bot bot1, Bot bot2, Bot bot3, int numberStep) {
+        return "\nХод номер:" + numberStep
+                + "\nХодит " + bot1.getName()
                 + "\nХодит " + bot2.getName()
                 + "\nХодит " + bot3.getName() + "\n";
     }
@@ -198,6 +255,12 @@ public class Misery implements GameStrategy {
             botMiser.setHill(hill);
         }
 
+    }
+
+    private void setWinner(Bot botOne, Bot botTwo, Bot botThree) {
+        botOne.setWinner(true);
+        botTwo.setWinner(false);
+        botThree.setWinner(false);
     }
 
 }

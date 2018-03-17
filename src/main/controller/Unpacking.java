@@ -127,7 +127,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot2.getCards(), checkCard);
                     log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                    step = writeSteps(botMiser, bot1, bot2);
+                    step = writeSteps(botMiser, bot1, bot2,numberStep);
                 }
                 if (select == 1) {
                     checkCard = getBenefitCard(bot1.getCards(), distributor.getCards().get(i));
@@ -137,7 +137,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot2.getCards(), checkCard);
                     log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                    step = writeSteps(bot1, botMiser, bot2);
+                    step = writeSteps(bot1, botMiser, bot2,numberStep);
                 }
                 if (select == 2) {
                     checkCard = getBenefitCard(bot2.getCards(), distributor.getCards().get(i));
@@ -147,7 +147,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot1.getCards(), checkCard);
                     log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                    step = writeSteps(bot2, botMiser, bot1);
+                    step = writeSteps(bot2, botMiser, bot1,numberStep);
                 }
             }
             if (i >= 2) {
@@ -159,7 +159,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot2.getCards(), checkCard);
                     log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                    step = writeSteps(botMiser, bot1, bot2);
+                    step = writeSteps(botMiser, bot1, bot2,numberStep);
                 }
                 if (select == 1) {
                     checkCard = getMinCard(bot1.getCards());
@@ -169,7 +169,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot2.getCards(), checkCard);
                     log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                    step = writeSteps(bot1, botMiser, bot2);
+                    step = writeSteps(bot1, botMiser, bot2,numberStep);
                 }
                 if (select == 2) {
                     checkCard = getMinCard(bot2.getCards());
@@ -179,7 +179,7 @@ public class Unpacking implements GameStrategy {
                     card2 = getBenefitCard(bot1.getCards(), checkCard);
                     log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
                     comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                    step = writeSteps(bot2, botMiser, bot1);
+                    step = writeSteps(bot2, botMiser, bot1,numberStep);
                 }
             }
         }
@@ -203,8 +203,9 @@ public class Unpacking implements GameStrategy {
 
     }
 
-    private String writeSteps(Bot bot1, Bot bot2, Bot bot3) {
-        return "\nХодит " + bot1.getName()
+    private String writeSteps(Bot bot1, Bot bot2, Bot bot3, int numberStep) {
+        return "\nХод номер:" + numberStep
+                + "\nХодит " + bot1.getName()
                 + "\nХодит " + bot2.getName()
                 + "\nХодит " + bot3.getName() + "\n";
     }

@@ -89,8 +89,6 @@ public class Contract implements GameStrategy {
             logger.info("\n" + bot1.getName() + " и " + bot2.getName() + " вистанули на данный контракт, начинается процесс розыгрыша:");
             sequenceOfSteps.addAll(drawOfCard(select, trump, logger, botContractor, bot1, bot2));
             return sequenceOfSteps;
-            /*writePointsForBots(botContractor, bot1, bot2);*/
-
         }
         if (getReactionOnContract(botContractor, bot1).equals("Vista") & getReactionOnContract(botContractor, bot2).equals("Pass")) {
             int selectGame = random.nextInt(2);
@@ -99,13 +97,11 @@ public class Contract implements GameStrategy {
                 logger.info("\nВистующий бот " + bot1.getName() + " решил играть в закрытую");
                 sequenceOfSteps.addAll(drawOfCard(select, trump, logger, botContractor, bot1, bot2));
                 return sequenceOfSteps;
-                /*writePointsForBots(botContractor, bot1, bot2);*/
             }
             if (selectGame == 1) {
                 logger.info("\nВистующий бот " + bot1.getName() + " решил играть в открытую");
                 sequenceOfSteps.addAll(drawOfCard(select, trump, logger, botContractor, bot1, bot2));
                 return sequenceOfSteps;
-                /*writePointsForBots(botContractor, bot1, bot2);*/
             }
         }
         if (getReactionOnContract(botContractor, bot1).equals("Pass") & getReactionOnContract(botContractor, bot2).equals("Vista")) {
@@ -114,13 +110,11 @@ public class Contract implements GameStrategy {
                 logger.info("\nВистующий бот " + bot2.getName() + " решил играть в закрытую");
                 sequenceOfSteps.addAll(drawOfCard(select, trump, logger, botContractor, bot1, bot2));
                 return sequenceOfSteps;
-                /*writePointsForBots(botContractor, bot1, bot2);*/
             }
             if (selectGame == 1) {
                 logger.info("\nВистующий бот " + bot2.getName() + " решил играть в открытую");
                 sequenceOfSteps.addAll(drawOfCard(select, trump, logger, botContractor, bot1, bot2));
                 return sequenceOfSteps;
-               /* writePointsForBots(botContractor, bot1, bot2);*/
             }
         }
         return sequenceOfSteps;
@@ -255,16 +249,22 @@ public class Contract implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             }
             if (card22.getValue() >= card11.getValue() & card22.getValue() >= card33.getValue()) {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
             if (card33.getValue() >= card11.getValue() & card33.getValue() >= card22.getValue()) {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() == card22.getColor() & card11.getColor() != card33.getColor() & card33.getColor() != trump) {
@@ -272,48 +272,65 @@ public class Contract implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
         }
         if (card11.getColor() == card22.getColor() & card11.getColor() != card33.getColor() & card33.getColor() == trump) {
             int bribe = bot33.getBribe() + 1;
             bot33.setBribe(bribe);
             log.info("\n" + bot33.getName() + " получил взятку");
+            setWinner(bot33, bot11, bot22);
+            return;
         }
         if (card11.getColor() == card33.getColor() & card11.getColor() != card22.getColor() & card22.getColor() != trump) {
             if (card11.getValue() >= card33.getValue()) {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() == card33.getColor() & card11.getColor() != card22.getColor() & card22.getColor() == trump) {
             int bribe = bot22.getBribe() + 1;
             bot22.setBribe(bribe);
             log.info("\n" + bot22.getName() + " получил взятку");
+            setWinner(bot22, bot11, bot33);
+            return;
         }
         if (card11.getColor() != card22.getColor() & card11.getColor() != card33.getColor()) {
             if (card22.getColor() != trump & card33.getColor() != trump) {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             }
             if (card11.getColor() != trump & card33.getColor() != trump) {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
             if (card11.getColor() != trump & card22.getColor() != trump) {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
             }
         }
     }
@@ -374,48 +391,69 @@ public class Contract implements GameStrategy {
      */
     private List<String> drawOfCard(int select, int trump, Logger log, Bot botContractor, Bot bot1, Bot bot2) {
         List<String> sequenceOfSteps = new ArrayList<>();
-        /*String step = null;*/
         for (int i = 0; i < 10; i++) {
-            int numberStep = i + 1;
-            log.info("\nХод номер:" + numberStep);
-           /* Card checkCard;
-            Card card1;
-            Card card2;*/
-            if (select == 0) {
-            /*    checkCard = getMaxOrMaxTrumpCard(botContractor.getCards(), trump);
-                log.info("\n" + botContractor.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getMaxOrMaxTrumpCard(bot1.getCards(), checkCard.getColor());
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getMaxOrMaxTrumpCard(bot2.getCards(), checkCard.getColor());
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, bot1, botContractor, bot2, log);
-                step = writeSteps(botContractor, bot1, bot2);*/
-                doIt(log, botContractor, bot1, bot2, trump, numberStep, sequenceOfSteps);
-            }
-            if (select == 1) {
-                /*checkCard = getMaxOrMaxTrumpCard(bot1.getCards(), trump);
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getMaxOrMaxTrumpCard(botContractor.getCards(), checkCard.getColor());
-                log.info("\n" + botContractor.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getMaxOrMaxTrumpCard(bot2.getCards(), checkCard.getColor());
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, bot1, botContractor, bot2, log);
-                step = writeSteps(bot1, botContractor, bot2);*/
-                doIt(log, bot1, botContractor, bot2, trump, numberStep, sequenceOfSteps);
-            }
-            if (select == 2) {
-               /* checkCard = getMaxOrMaxTrumpCard(bot2.getCards(), trump);
-                log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(checkCard));
-                card1 = getMaxOrMaxTrumpCard(botContractor.getCards(), checkCard.getColor());
-                log.info("\n" + botContractor.getName() + " кладет:" + Card.getCard(card1));
-                card2 = getMaxOrMaxTrumpCard(bot1.getCards(), checkCard.getColor());
-                log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
-                comparisonCards(checkCard, card1, card2, bot2, botContractor, bot1, log);
-                step = writeSteps(bot2, botContractor, bot1);*/
-                doIt(log, bot2, botContractor, bot1, trump, numberStep, sequenceOfSteps);
+            label:
+            {
+                int numberStep = i + 1;
+                log.info("\nХод номер:" + numberStep);
+                if (select == 0) {
+                    if (numberStep == 1) {
+                        doIt(log, botContractor, bot1, bot2, trump, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botContractor.isWinner()) {
+                            doIt(log, botContractor, bot1, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botContractor, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botContractor, bot1, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                    }
+                }
+                if (select == 1) {
+                    if (numberStep == 1) {
+                        doIt(log, bot1, botContractor, bot2, trump, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botContractor.isWinner()) {
+                            doIt(log, botContractor, bot1, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botContractor, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botContractor, bot1, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                    }
+                }
+                if (select == 2) {
+                    if (numberStep == 1) {
+                        doIt(log, bot2, botContractor, bot1, trump, numberStep, sequenceOfSteps);
+                    }
+                    if (numberStep > 1) {
+                        if (botContractor.isWinner()) {
+                            doIt(log, botContractor, bot1, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot1.isWinner()) {
+                            doIt(log, bot1, botContractor, bot2, trump, numberStep, sequenceOfSteps);
+                            break label;
+                        }
+                        if (bot2.isWinner()) {
+                            doIt(log, bot2, botContractor, bot1, trump, numberStep, sequenceOfSteps);
+                        }
+                    }
+                }
             }
         }
-        /*sequenceOfSteps.add(step);*/
         switch (select) {
             case 0:
                 writePointsForBots(botContractor, bot1, bot2);
@@ -427,9 +465,9 @@ public class Contract implements GameStrategy {
                 writePointsForBots(bot2, botContractor, bot1);
                 break;
         }
-
         return sequenceOfSteps;
     }
+
 
     private String writeSteps(Bot bot1, Bot bot2, Bot bot3, int numberStep) {
         return "\nХод номер:" + numberStep
@@ -452,6 +490,12 @@ public class Contract implements GameStrategy {
         comparisonCards(checkCard, card1, card2, bot11, bot22, bot33, log, trump);
         step = writeSteps(bot11, bot22, bot33, numberStep);
         sequenceOfSteps.add(step);
+    }
+
+    private void setWinner(Bot botOne, Bot botTwo, Bot botThree) {
+        botOne.setWinner(true);
+        botTwo.setWinner(false);
+        botThree.setWinner(false);
     }
 
 }

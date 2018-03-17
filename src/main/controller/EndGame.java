@@ -15,6 +15,12 @@ public class EndGame {
         bot3.setBribe(0);
     }
 
+    public void refreshWinner(Bot bot1, Bot bot2, Bot bot3){
+        bot1.setWinner(false);
+        bot2.setWinner(false);
+        bot3.setWinner(false);
+    }
+
     public void countVistaForBots(Bot bot1, Bot bot2, Bot bot3) {
         int maxValueOfBullet = Stream.of(bot1.getBullet(), bot2.getBullet(), bot3.getBullet()).max(Integer::compareTo).get();
         int minValueOfHill = Stream.of(maxValueOfBullet - bot1.getBullet() + bot1.getHill(), maxValueOfBullet - bot2.getBullet() + bot2.getHill(), maxValueOfBullet - bot3.getBullet() + bot3.getHill()).min(Integer::compareTo).get();
