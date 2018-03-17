@@ -70,7 +70,7 @@ public class ViewPreference {
                 int selectEnd = scanner.nextInt();
                 switch (selectEnd) {
                     case 1:
-                        System.out.println("Введите количество раздачи (не менее 10):");
+                        System.out.println("Введите количество раздачи:");
                         int amountOfDistribution = scanner.nextInt();
                         Distribution distribution;
                         while (countDistribution < amountOfDistribution) {
@@ -84,10 +84,9 @@ public class ViewPreference {
                         log.info("\n" + bot2.getName() + ": " + bot2.getOwnVista());
                         log.info("\n" + bot3.getName() + ": " + bot3.getOwnVista());
                         log.info("\n----------------------------------------------------------------------------------");
-
                         break;
                     case 2:
-                        System.out.println("Введите количество общих пуль для концовки ( не более 35):");
+                        System.out.println("Введите количество общих пуль для концовки:");
                         int amountOfBullets = scanner.nextInt();
                         while ((bot1.getBullet() + bot2.getBullet() + bot3.getBullet()) < amountOfBullets) {
                             distribution = doApp(countDistribution, nameBot1, nameBot2, nameBot3, nameDistributer, init, start, bot1, bot2, bot3, distributor, log, deck, pof, endGame);

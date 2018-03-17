@@ -112,7 +112,8 @@ public class Unpacking implements GameStrategy {
         List<String> sequenceOfSteps = new ArrayList<>();
         String step = null;
         for (int i = 0; i < 10; i++) {
-            log.info("\nХод номер:" + i);
+            int numberStep = i + 1;
+            log.info("\nХод номер:" + numberStep);
             Card checkCard;
             Card card1;
             Card card2;
