@@ -20,22 +20,28 @@ public class Unpacking implements GameStrategy {
         return sequenceOfSteps;
     }
 
-    public void comparisonCards(Card card11, Card card22, Card card33, Bot bot11, Bot bot22, Bot bot33, Logger log) {
+    private void comparisonCards(Card card11, Card card22, Card card33, Bot bot11, Bot bot22, Bot bot33, Logger log) {
         if (card11.getColor() == card22.getColor() & card11.getColor() == card33.getColor()) {
             if (card11.getValue() >= card22.getValue() & card11.getValue() >= card33.getValue()) {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             }
             if (card22.getValue() >= card11.getValue() & card22.getValue() >= card33.getValue()) {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
             if (card33.getValue() >= card11.getValue() & card33.getValue() >= card22.getValue()) {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() == card22.getColor() & card11.getColor() != card33.getColor()) {
@@ -43,10 +49,14 @@ public class Unpacking implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot22.getBribe() + 1;
                 bot22.setBribe(bribe);
                 log.info("\n" + bot22.getName() + " получил взятку");
+                setWinner(bot22, bot11, bot33);
+                return;
             }
         }
         if (card11.getColor() == card33.getColor() & card11.getColor() != card22.getColor()) {
@@ -54,16 +64,21 @@ public class Unpacking implements GameStrategy {
                 int bribe = bot11.getBribe() + 1;
                 bot11.setBribe(bribe);
                 log.info("\n" + bot11.getName() + " получил взятку");
+                setWinner(bot11, bot22, bot33);
+                return;
             } else {
                 int bribe = bot33.getBribe() + 1;
                 bot33.setBribe(bribe);
                 log.info("\n" + bot33.getName() + " получил взятку");
+                setWinner(bot33, bot11, bot22);
+                return;
             }
         }
         if (card11.getColor() != card22.getColor() & card11.getColor() != card33.getColor()) {
             int bribe = bot11.getBribe() + 1;
             bot11.setBribe(bribe);
             log.info("\n" + bot11.getName() + " получил взятку");
+            setWinner(bot11, bot22, bot33);
         }
     }
 
@@ -110,84 +125,89 @@ public class Unpacking implements GameStrategy {
 
     private List<String> drawOfCard(int select, Logger log, Bot botMiser, Bot bot1, Bot bot2, Distributor distributor) {
         List<String> sequenceOfSteps = new ArrayList<>();
-        String step = null;
         for (int i = 0; i < 10; i++) {
-            int numberStep = i + 1;
-            log.info("\nХод номер:" + numberStep);
-            Card checkCard;
-            Card card1;
-            Card card2;
-            if (i < 2) {
-                log.info("\nРаздающий " + distributor.getName() + " показывает " + i + " карту:" + Card.getCard(distributor.getCards().get(i)));
-                if (select == 0) {
-                    checkCard = getBenefitCard(botMiser.getCards(), distributor.getCards().get(i));
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(bot1.getCards(), checkCard);
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot2.getCards(), checkCard);
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                    step = writeSteps(botMiser, bot1, bot2,numberStep);
+            label:
+            {
+                int numberStep = i + 1;
+                log.info("\nХод номер:" + numberStep);
+                if (numberStep < 3) {
+                    log.info("\nРаздающий " + distributor.getName() + " показывает " + numberStep + " карту:" + Card.getCard(distributor.getCards().get(i)));
+                    if (select == 0) {
+                        if (numberStep == 1) {
+                            doIt1(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                        }
+                        if (numberStep > 1) {
+                            if (botMiser.isWinner()) {
+                                doIt1(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot1.isWinner()) {
+                                doIt1(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot2.isWinner()) {
+                                doIt1(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                        }
+                    }
+                    if (select == 1) {
+                        if (numberStep == 1) {
+                            doIt1(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                        }
+                        if (numberStep > 1) {
+                            if (botMiser.isWinner()) {
+                                doIt1(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot1.isWinner()) {
+                                doIt1(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot2.isWinner()) {
+                                doIt1(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                        }
+                    }
+                    if (select == 2) {
+                        if (numberStep == 1) {
+                            doIt1(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                        }
+                        if (numberStep > 1) {
+                            if (botMiser.isWinner()) {
+                                doIt1(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot1.isWinner()) {
+                                doIt1(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                            if (bot2.isWinner()) {
+                                doIt1(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps, distributor, numberStep - 1);
+                                break label;
+                            }
+                        }
+                    }
                 }
-                if (select == 1) {
-                    checkCard = getBenefitCard(bot1.getCards(), distributor.getCards().get(i));
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot2.getCards(), checkCard);
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                    step = writeSteps(bot1, botMiser, bot2,numberStep);
-                }
-                if (select == 2) {
-                    checkCard = getBenefitCard(bot2.getCards(), distributor.getCards().get(i));
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot1.getCards(), checkCard);
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                    step = writeSteps(bot2, botMiser, bot1,numberStep);
-                }
-            }
-            if (i >= 2) {
-                if (select == 0) {
-                    checkCard = getMinCard(botMiser.getCards());
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(bot1.getCards(), checkCard);
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot2.getCards(), checkCard);
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, botMiser, bot1, bot2, log);
-                    step = writeSteps(botMiser, bot1, bot2,numberStep);
-                }
-                if (select == 1) {
-                    checkCard = getMinCard(bot1.getCards());
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot2.getCards(), checkCard);
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, bot1, botMiser, bot2, log);
-                    step = writeSteps(bot1, botMiser, bot2,numberStep);
-                }
-                if (select == 2) {
-                    checkCard = getMinCard(bot2.getCards());
-                    log.info("\n" + bot2.getName() + " кладет:" + Card.getCard(checkCard));
-                    card1 = getBenefitCard(botMiser.getCards(), checkCard);
-                    log.info("\n" + botMiser.getName() + " кладет:" + Card.getCard(card1));
-                    card2 = getBenefitCard(bot1.getCards(), checkCard);
-                    log.info("\n" + bot1.getName() + " кладет:" + Card.getCard(card2));
-                    comparisonCards(checkCard, card1, card2, bot2, botMiser, bot1, log);
-                    step = writeSteps(bot2, botMiser, bot1,numberStep);
+                if (numberStep >= 3) {
+                    if (botMiser.isWinner()) {
+                        doIt2(log, botMiser, bot1, bot2, numberStep, sequenceOfSteps);
+                        break label;
+                    }
+                    if (bot1.isWinner()) {
+                        doIt2(log, bot1, botMiser, bot2, numberStep, sequenceOfSteps);
+                        break label;
+                    }
+                    if (bot2.isWinner()) {
+                        doIt2(log, bot2, botMiser, bot1, numberStep, sequenceOfSteps);
+                    }
                 }
             }
         }
-        sequenceOfSteps.add(step);
         writePointsForBots(botMiser);
         writePointsForBots(bot1);
         writePointsForBots(bot2);
-
         return sequenceOfSteps;
     }
 
@@ -208,5 +228,43 @@ public class Unpacking implements GameStrategy {
                 + "\nХодит " + bot1.getName()
                 + "\nХодит " + bot2.getName()
                 + "\nХодит " + bot3.getName() + "\n";
+    }
+
+    private void setWinner(Bot botOne, Bot botTwo, Bot botThree) {
+        botOne.setWinner(true);
+        botTwo.setWinner(false);
+        botThree.setWinner(false);
+    }
+
+    private void doIt1(Logger log, Bot bot11, Bot bot22, Bot bot33, int numberStep, List<String> sequenceOfSteps, Distributor distributor, int i) {
+        Card checkCard;
+        Card card1;
+        Card card2;
+        String step;
+        checkCard = getBenefitCard(bot11.getCards(), distributor.getCards().get(i));
+        log.info("\n" + bot11.getName() + " кладет:" + Card.getCard(checkCard));
+        card1 = getBenefitCard(bot22.getCards(), checkCard);
+        log.info("\n" + bot22.getName() + " кладет:" + Card.getCard(card1));
+        card2 = getBenefitCard(bot33.getCards(), checkCard);
+        log.info("\n" + bot33.getName() + " кладет:" + Card.getCard(card2));
+        comparisonCards(checkCard, card1, card2, bot11, bot22, bot33, log);
+        step = writeSteps(bot11, bot22, bot33, numberStep);
+        sequenceOfSteps.add(step);
+    }
+
+    private void doIt2(Logger log, Bot bot11, Bot bot22, Bot bot33, int numberStep, List<String> sequenceOfSteps) {
+        Card checkCard;
+        Card card1;
+        Card card2;
+        String step;
+        checkCard = getMinCard(bot11.getCards());
+        log.info("\n" + bot11.getName() + " кладет:" + Card.getCard(checkCard));
+        card1 = getBenefitCard(bot22.getCards(), checkCard);
+        log.info("\n" + bot22.getName() + " кладет:" + Card.getCard(card1));
+        card2 = getBenefitCard(bot33.getCards(), checkCard);
+        log.info("\n" + bot33.getName() + " кладет:" + Card.getCard(card2));
+        comparisonCards(checkCard, card1, card2, bot11, bot22, bot33, log);
+        step = writeSteps(bot11, bot22, bot33, numberStep);
+        sequenceOfSteps.add(step);
     }
 }

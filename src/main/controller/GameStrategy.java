@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 /**
- * Общий интерфейс для стратегий игр, который имеет два метода: запустить и сравнить карты
+ * Общий интерфейс для стратегий игр
  */
 public interface GameStrategy {
 

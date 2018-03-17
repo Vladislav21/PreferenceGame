@@ -16,7 +16,7 @@ public class FinallAPI {
         String nameBot1 = distribution.getBotName1();
         String nameBot2 = distribution.getBotName2();
         String nameBot3 = distribution.getBotName3();
-        String nameWinner = null; // имя того кто выиграл торговлю
+        String nameWinner; // имя того кто выиграл торговлю
         List<Card> cards1 = distribution.getCards1();
         List<Card> cards2 = distribution.getCards2();
         List<Card> cards3 = distribution.getCards3();
