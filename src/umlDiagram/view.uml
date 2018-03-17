@@ -3,11 +3,11 @@
   <ID>JAVA</ID>
   <OriginalElement>main.view</OriginalElement>
   <nodes>
-    <node x="-337.0" y="-293.0">main.view.ViewPreference</node>
+    <node x="-396.0" y="-261.0">main.view.ViewPreference</node>
   </nodes>
   <notes />
   <edges />
-  <settings layout="Hierarchic Group" zoom="1.0" x="66.0" y="15.0" />
+  <settings layout="Hierarchic Group" zoom="1.0" x="65.0" y="15.0" />
   <SelectedNodes>
     <node>main.view.ViewPreference</node>
   </SelectedNodes>
