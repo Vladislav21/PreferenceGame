@@ -3,6 +3,7 @@ package main.controller;
 import main.model.Bot;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Методы для обновления взяток и подсчета конечных вистов
@@ -15,40 +16,48 @@ public class EndGame {
     }
 
     public void countVistaForBots(Bot bot1, Bot bot2, Bot bot3) {
-        int[] arrayHills = {bot1.getHill(), bot2.getHill(), bot3.getHill()};
-        int minHill = Arrays.stream(arrayHills).min().getAsInt();
-        if (bot1.getHill() == minHill) {
-            countVista(bot1, bot2, bot3);
-        }
-        if (bot2.getHill() == minHill) {
-            countVista(bot2, bot1, bot3);
-        }
-        if (bot3.getHill() == minHill) {
-            countVista(bot3, bot1, bot2);
+        int maxValueOfBullet = Stream.of(bot1.getBullet(), bot2.getBullet(), bot3.getBullet()).max(Integer::compareTo).get();
+        int minValueOfHill = Stream.of(maxValueOfBullet - bot1.getBullet() + bot1.getHill(), maxValueOfBullet - bot2.getBullet() + bot2.getHill(), maxValueOfBullet - bot3.getBullet() + bot3.getHill()).min(Integer::compareTo).get();
+        int hill1 = maxValueOfBullet - bot1.getBullet() + bot1.getHill() - minValueOfHill;
+        int hill2 = maxValueOfBullet - bot2.getBullet() + bot2.getHill() - minValueOfHill;
+        int hill3 = maxValueOfBullet - bot3.getBullet() + bot3.getHill() - minValueOfHill;
+        double Vista2_1 = hill1 * 2.5 + bot2.getVista1();
+        double Vista3_1 = hill1 * 2.5 + bot3.getVista1();
+        double Vista1_2 = hill2 * 2.5 + bot1.getVista1();
+        double Vista3_2 = hill2 * 2.5 + bot3.getVista2();
+        double Vista1_3 = hill3 * 2.5 + bot1.getVista2();
+        double Vista2_3 = hill3 * 2.5 + bot2.getVista2();
+        double FVista1_2;
+        double FVista2_1;
+        double FVista1_3;
+        double FVista3_1;
+        double FVista2_3;
+        double FVista3_2;
+        if (Vista1_2 > Vista2_1) {
+            FVista1_2 = Vista1_2 - Vista2_1;
+            FVista2_1 = -FVista1_2;
+        } else {
+            FVista2_1 = Vista2_1 - Vista1_2;
+            FVista1_2 = -FVista2_1;
         }
 
-    }
+        if (Vista1_3 > Vista3_1) {
+            FVista1_3 = Vista1_3 - Vista3_1;
+            FVista3_1 = -FVista1_3;
+        } else {
+            FVista3_1 = Vista3_1 - Vista1_3;
+            FVista1_3 = -FVista3_1;
+        }
 
-    private void countVista(Bot botWithMinHill, Bot bot1, Bot bot2) {
-        bot1.setHill(bot1.getHill() - botWithMinHill.getHill());
-        bot2.setHill(bot2.getHill() - botWithMinHill.getHill());
-        int VistaOnBot1 = (bot1.getHill() * 10) / 3;
-        int VistaOnBot2 = (bot2.getHill() * 10) / 3;
-        botWithMinHill.setVista1(VistaOnBot1);
-        bot2.setVista1(VistaOnBot1);
-        botWithMinHill.setVista2(VistaOnBot2);
-        bot1.setVista1(VistaOnBot2);
-        if (VistaOnBot1 > VistaOnBot2) {
-            int difference = VistaOnBot1 - VistaOnBot2;
-            bot2.setOwnVista(difference);
-            bot1.setOwnVista(-difference);
-            botWithMinHill.setOwnVista(botWithMinHill.getVista1() + botWithMinHill.getVista2());
+        if (Vista2_3 > Vista3_2) {
+            FVista2_3 = Vista2_3 - Vista3_2;
+            FVista3_2 = -FVista2_3;
+        } else {
+            FVista3_2 = Vista3_2 - Vista2_3;
+            FVista2_3 = -FVista3_2;
         }
-        if (VistaOnBot2 > VistaOnBot1) {
-            int difference = VistaOnBot2 - VistaOnBot1;
-            bot1.setOwnVista(difference);
-            bot2.setOwnVista(-difference);
-            botWithMinHill.setOwnVista(botWithMinHill.getVista1() + botWithMinHill.getVista2());
-        }
+        bot1.setOwnVista(FVista1_2 + FVista1_3);
+        bot2.setOwnVista(FVista2_1 + FVista2_3);
+        bot3.setOwnVista(FVista3_1 + FVista3_2);
     }
 }
